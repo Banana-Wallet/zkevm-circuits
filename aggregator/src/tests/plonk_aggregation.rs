@@ -632,19 +632,21 @@ fn gen_application_snark(params: &ParamsKZG<Bn256>) -> aggregation::Snark {
 
 #[test]
 fn test_plonk_aggregation_circuit() {
-    println!("test_plonk_aggregation_circuit");
     dbg!("I'm debugging");
 
+    dbg!("Step - 1");
     let params = halo2_base::utils::fs::gen_srs(21);
-    let params_app = {
-        let mut params = params.clone();
-        params.downsize(8);
-        params
-    };
+    dbg!("Step - 2 SRS generated");
+    // let params_app = {
+    //     let mut params = params.clone();
+    //     params.downsize(8);
+    //     params
+    // };
 
     let k = 20;
     let circuit = build_new_aggregation_circuit(2);
-    let instance = circuit.instances();
+    dbg!("Built aggregation circuit");
+    // let instance = circuit.instances();
 
     let pk = gen_pk(&params, &circuit);
     let protocol = compile(
@@ -652,6 +654,7 @@ fn test_plonk_aggregation_circuit() {
         pk.get_vk(),
         Config::kzg().with_num_instance(AggregationCircuit::num_instance(&circuit)),
     );
+    dbg!("Generated protocol on combining it");
 
     let proof = gen_proof::<
         _,
@@ -659,6 +662,7 @@ fn test_plonk_aggregation_circuit() {
         aggregation::PoseidonTranscript<NativeLoader, _>,
         aggregation::PoseidonTranscript<NativeLoader, _>,
     >(&params, &pk, circuit.clone(), circuit.instances());
+    dbg!("Generating proof {}", proof.clone());
     let snark = aggregation::Snark::new(protocol, circuit.instances(), proof);
 
     let agg_circuit = aggregation::AggregationCircuit::new(&params, [snark]);

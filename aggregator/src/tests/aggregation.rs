@@ -96,6 +96,7 @@ pub fn build_new_aggregation_circuit(num_real_chunks: usize) -> AggregationCircu
 
     let mut rng = test_rng();
     let params = gen_srs(k0);
+    dbg!("Generated SRS for aggregation circuit innner");
 
     let mut chunks_without_padding = (0..num_real_chunks)
         .map(|_| ChunkHash::mock_random_chunk_hash_for_testing(&mut rng))
@@ -114,6 +115,7 @@ pub fn build_new_aggregation_circuit(num_real_chunks: usize) -> AggregationCircu
     // ==========================
     // real chunks
     // ==========================
+    dbg!("Start generating snarks");
     let real_snarks = {
         let circuits = chunks_with_padding
             .iter()
@@ -136,6 +138,8 @@ pub fn build_new_aggregation_circuit(num_real_chunks: usize) -> AggregationCircu
     // batch
     // ==========================
     let batch_hash = BatchHash::construct(&chunks_with_padding);
+
+    dbg!("Inner aggregation circuit generation completed returning it");
 
     AggregationCircuit::new(
         &params,
