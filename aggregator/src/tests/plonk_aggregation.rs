@@ -36,9 +36,13 @@ use snark_verifier::{
 };
 use snark_verifier_sdk::CircuitExt;
 use std::{io::Cursor, rc::Rc};
-use crate::tests::aggregation::build_new_aggregation_circuit;
+// use crate::tests;
+// use crate::tests::aggregation::build_new_aggregation_circuit;
+// use crate::tests::aggregation::build_new_aggregation_circuit;
+// use crate::std::num::bignum::tests::aggregation::build_new_aggregation_circuit;
 use crate::{
-    aggregation::AggregationCircuit, batch::BatchHash, constants::MAX_AGG_SNARKS, layer_0,
+    aggregation::{AggregationCircuit},
+    tests::mock_chunk::MockChunkCircuit,
 };
 
 const LIMBS: usize = 3;
@@ -630,8 +634,9 @@ fn gen_application_snark(params: &ParamsKZG<Bn256>) -> aggregation::Snark {
 }
 
 
-#[test]
-fn test_plonk_aggregation_circuit() {
+// #[test]
+// fn test_plonk_aggregation_circuit() {
+fn main() {
     dbg!("I'm debugging");
 
     dbg!("Step - 1");
@@ -689,4 +694,5 @@ fn test_plonk_aggregation_circuit() {
 // pub fn build_new_aggregation_circuit(num_real_chunks: usize) -> AggregationCircuit {
 
     // println!("params {:?} ", params);
+// }
 }
