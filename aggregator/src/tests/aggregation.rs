@@ -458,26 +458,6 @@ fn gen_proof_local<
     proof
 }
 
-// fn gen_application_snark(params: &ParamsKZG<Bn256>) -> aggregation::Snark {
-//     let circuit = application::StandardPlonk::rand(OsRng);
-
-//     let pk = gen_pk(params, &circuit);
-//     let protocol = compile(
-//         params,
-//         pk.get_vk(),
-//         Config::kzg().with_num_instance(application::StandardPlonk::num_instance()),
-//     );
-
-//     let proof = gen_proof::<
-//         _,
-//         _,
-//         aggregation::PoseidonTranscript<NativeLoader, _>,
-//         aggregation::PoseidonTranscript<NativeLoader, _>,
-//     >(params, &pk, circuit.clone(), circuit.instances());
-//     aggregation::Snark::new(protocol, circuit.instances(), proof)
-// }
-
-
 #[test]
 fn test_aggregation_circuit() {
     env_logger::init();
