@@ -502,11 +502,7 @@ fn test_aggregation_circuit() {
 
     println!("Circuit instances {:?}", val2);
 
-    // debug_assert_eq!(
-    //     val1,
-    //     val2,
-    //     "Invalid Instances"
-    // );
+   
 
     let agg_circuit = aggregation_zkevm::AggregationCircuit::new(&params, snarks);
     let pk = gen_pk_local(&params, &agg_circuit);
@@ -521,6 +517,12 @@ fn test_aggregation_circuit() {
 
     println!("Generated proof for BAC circuit");
     println!("Proof size: {}", proof_final.len());
+
+     debug_assert_eq!(
+        vec![1],
+        vec![2],
+        "Invalid Instances"
+    );
 
 //     let mock_prover = MockProver::<Fr>::run(k, &circuit, instance).unwrap();
 //     mock_prover.assert_satisfied_par();
