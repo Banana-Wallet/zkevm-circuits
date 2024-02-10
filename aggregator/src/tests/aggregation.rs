@@ -500,6 +500,18 @@ fn test_aggregation_circuit() {
     
     // let snarks = vec![aggregation_zkevm::Snark::new(protocol, circuit.instances(), proof_agg_zkevm)];
 
+    let val1 = protocol.num_instance;
+    let val2 = circuit.instances().iter().map(|instances| instances.len()).collect_vec();
+
+    println!("Protocol instances {:?}", val1);
+    println!("Circuit instances {:?}", val2);
+
+    debug_assert_eq!(
+        val1,
+        val2,
+        "Invalid Instances"
+    );
+
     // let agg_circuit = aggregation_zkevm::AggregationCircuit::new(&params, snarks);
     // let pk = gen_pk_local(&params, &agg_circuit);
     // println!("Generated PK for aggregation circuit");
