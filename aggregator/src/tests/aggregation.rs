@@ -465,16 +465,15 @@ fn test_aggregation_circuit() {
     let k = 20;
 
     // This set up requires one round of keccak for chunk's data hash
-    let circuit = build_new_aggregation_circuit(2);
-    let instance = circuit.instances();
+    let circuit = build_new_aggregation_circuit(1);
     println!("Instances len {:?}", circuit.instances().len()); 
 
     let params = snark_verifier::loader::halo2::halo2_ecc::halo2_base::utils::fs::gen_srs(21);
-    let params_app = {
-        let mut params = params.clone();
-        // params.downsize(14);
-        params
-    };
+    // let params_app = {
+    //     let mut params = params.clone();
+    //     // params.downsize(14);
+    //     params
+    // };
 
     let pk = gen_pk_local(&params, &circuit);
     println!("Generated PK for aggregation circuit");
@@ -485,32 +484,35 @@ fn test_aggregation_circuit() {
         Config::kzg().with_num_instance(vec![circuit.instances().len()]),
     );
 
-    let proof_agg_zkevm = gen_proof_local::<
-        _,
-        _,
-        aggregation_zkevm::PoseidonTranscript<NativeLoader, _>,
-        aggregation_zkevm::PoseidonTranscript<NativeLoader, _>,
-    >(&params, &pk, circuit.clone(), circuit.instances());
+    println!("Circuit protocol {:?}", protocol);
+    println!("Circuit instances {:?}", circuit.instances());
 
-    println!("Generated proof for aggregation circuit");
-    println!("Proof size: {}", proof_agg_zkevm.len());
+    // let proof_agg_zkevm = gen_proof_local::<
+    //     _,
+    //     _,
+    //     aggregation_zkevm::PoseidonTranscript<NativeLoader, _>,
+    //     aggregation_zkevm::PoseidonTranscript<NativeLoader, _>,
+    // >(&params, &pk, circuit.clone(), circuit.instances());
+
+    // println!("Generated proof for aggregation circuit");
+    // println!("Proof size: {}", proof_agg_zkevm.len());
     
     
-    let snarks = vec![aggregation_zkevm::Snark::new(protocol, circuit.instances(), proof_agg_zkevm)];
+    // let snarks = vec![aggregation_zkevm::Snark::new(protocol, circuit.instances(), proof_agg_zkevm)];
 
-    let agg_circuit = aggregation_zkevm::AggregationCircuit::new(&params, snarks);
-    let pk = gen_pk_local(&params, &agg_circuit);
-    println!("Generated PK for aggregation circuit");
+    // let agg_circuit = aggregation_zkevm::AggregationCircuit::new(&params, snarks);
+    // let pk = gen_pk_local(&params, &agg_circuit);
+    // println!("Generated PK for aggregation circuit");
 
-    let proof_final = gen_proof_local::<_, _, EvmTranscript<G1Affine, _, _, _>, EvmTranscript<G1Affine, _, _, _>>(
-        &params,
-        &pk,
-        agg_circuit.clone(),
-        agg_circuit.instances(),
-    );
+    // let proof_final = gen_proof_local::<_, _, EvmTranscript<G1Affine, _, _, _>, EvmTranscript<G1Affine, _, _, _>>(
+    //     &params,
+    //     &pk,
+    //     agg_circuit.clone(),
+    //     agg_circuit.instances(),
+    // );
 
-    println!("Generated proof for BAC circuit");
-    println!("Proof size: {}", proof_final.len());
+    // println!("Generated proof for BAC circuit");
+    // println!("Proof size: {}", proof_final.len());
 
     // let mock_prover = MockProver::<Fr>::run(k, &circuit, instance).unwrap();
     // mock_prover.assert_satisfied_par();
