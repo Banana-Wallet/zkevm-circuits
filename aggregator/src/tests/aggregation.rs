@@ -317,10 +317,8 @@ mod aggregation_zkevm {
         }
 
         fn configure(meta: &mut plonk::ConstraintSystem<Fr>) -> Self::Config {
-            let path = std::env::var("VERIFY_CONFIG").unwrap();
-            let params: AggregationConfigParams = AggregationConfigParams{
-                // {"strategy":"Simple","degree":21,"num_advice":5,"num_lookup_advice":1,"num_fixed":1,"lookup_bits":20,"limb_bits":88,"num_limbs":3}
-
+            // let path = std::env::var("VERIFY_CONFIG").unwrap();
+            let params: AggregationConfigParams = AggregationConfigParams {
                 strategy: halo2_ecc::fields::fp::FpStrategy::Simple,
                 degree: 21,
                 num_advice: 5,
