@@ -266,6 +266,8 @@ mod aggregation_zkevm {
                 })
                 .collect_vec();
 
+            println!("Accumulators formed ");
+
             let (accumulator, as_proof) = {
                 let mut transcript = PoseidonTranscript::<NativeLoader, _>::new(Vec::new());
                 let accumulator =
@@ -273,9 +275,12 @@ mod aggregation_zkevm {
                         .unwrap();
                 (accumulator, transcript.finalize())
             };
+
+            println!("AS proof formed ");
             let KzgAccumulator { lhs, rhs } = accumulator;
             let instances =
                 [lhs.x, lhs.y, rhs.x, rhs.y].map(fe_to_limbs::<_, _, LIMBS, BITS>).concat();
+            println!("Instances formed ");
 
             Self {
                 svk,
@@ -320,7 +325,7 @@ mod aggregation_zkevm {
             let params: AggregationConfigParams = AggregationConfigParams {
                 strategy: halo2_ecc::fields::fp::FpStrategy::Simple,
                 degree: 21,
-                num_advice: 10, 
+                num_advice: 100, 
                 num_lookup_advice: 1,
                 num_fixed: 1,
                 lookup_bits: 20,
@@ -338,6 +343,8 @@ mod aggregation_zkevm {
         ) -> Result<(), plonk::Error> {
             config.range().load_lookup_table(&mut layouter)?;
             let max_rows = config.range().gate.max_rows;
+
+            println!("Max rows: {}", max_rows);
 
             let mut first_pass = halo2_base::SKIP_FIRST_PASS; // assume using simple floor planner
             let mut assigned_instances: Option<Vec<Cell>> = None;
@@ -387,6 +394,8 @@ mod aggregation_zkevm {
                     Ok(())
                 },
             )?;
+
+            println!("Synthesis complete");
 
             // Expose instances
             // TODO: use less instances by following Scroll's strategy of keeping only last bit of y coordinate
