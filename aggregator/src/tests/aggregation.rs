@@ -317,22 +317,16 @@ mod aggregation_zkevm {
         }
 
         fn configure(meta: &mut plonk::ConstraintSystem<Fr>) -> Self::Config {
-            // let path = std::env::var("VERIFY_CONFIG").unwrap();
             let params: AggregationConfigParams = AggregationConfigParams {
                 strategy: halo2_ecc::fields::fp::FpStrategy::Simple,
                 degree: 21,
-                num_advice: 5,
+                num_advice: 10, 
                 num_lookup_advice: 1,
                 num_fixed: 1,
                 lookup_bits: 20,
                 limb_bits: 88,
                 num_limbs: 3,
             };
-            // serde_json::from_reader(
-            //     File::open(path.as_str())
-            //         .unwrap_or_else(|err| panic!("Path {path} does not exist: {err:?}")),
-            // )
-            // .unwrap();
 
             AggregationConfig::configure(meta, params)
         }
@@ -500,9 +494,10 @@ fn test_aggregation_circuit() {
 
     println!("Circuit instances {:?}", val2);
 
-   
-
     let agg_circuit = aggregation_zkevm::AggregationCircuit::new(&params, snarks);
+
+    println!("Built agg circuit");
+
     let pk = gen_pk_local(&params, &agg_circuit);
     println!("Generated PK for aggregation circuit");
 
